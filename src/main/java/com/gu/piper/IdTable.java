@@ -1,4 +1,4 @@
-package com.gu.piper.orm;
+package com.gu.piper;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;

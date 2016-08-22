@@ -1,4 +1,4 @@
-package com.gu.piper.orm;
+package com.gu.piper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
