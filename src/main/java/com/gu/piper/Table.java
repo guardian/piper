@@ -33,6 +33,36 @@ public class Table<T> {
     }
 
     @NonNull
+    public static <R extends Identifiable> IdTable<R> getIdTable(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<R> mapper) {
+        return new IdTable<R>(db, tableName, mapper) {
+            @Override
+            protected long getId(@NonNull R r) {
+                return r.getId();
+            }
+
+            @Override
+            protected void setId(@NonNull R r, long id) {
+                r.setId(id);
+            }
+        };
+    }
+
+    @NonNull
+    public static <R> IdTable<R> getIdTable(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<R> mapper, @NonNull final Identifier<R> identifier) {
+        return new IdTable<R>(db, tableName, mapper) {
+            @Override
+            protected long getId(@NonNull R r) {
+                return identifier.getId(r);
+            }
+
+            @Override
+            protected void setId(@NonNull R r, long id) {
+                identifier.setId(r, id);
+            }
+        };
+    }
+
+    @NonNull
     protected static String[] asArg(long id) {
         return new String[] { String.valueOf(id) };
     }
