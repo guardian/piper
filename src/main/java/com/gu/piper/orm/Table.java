@@ -17,12 +17,9 @@ import java.util.List;
  */
 public class Table<T> {
 
-    @NonNull
-    protected final SQLiteDatabase db;
-    @NonNull
-    protected final String tableName;
-    @NonNull
-    protected final Mapper<T> mapper;
+    @NonNull protected final SQLiteDatabase db;
+    @NonNull protected final String tableName;
+    @NonNull protected final Mapper<T> mapper;
 
     protected Table(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<T> mapper) {
         this.db = db;
