@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * TODO
+ * Static helper methods for getting values from {@link Cursor}s.
  */
 public final class CursorHelper {
 
@@ -19,6 +19,15 @@ public final class CursorHelper {
         return index >= 0 ? cursor.getBlob(index) : def;
     }
 
+    /**
+     * Read a byte array from <code>col</code> in <code>cursor</code> or throw an exception if that
+     * column is missing.
+     *
+     * @param cursor to read from
+     * @param col name of column to read
+     * @return a byte array
+     * @throws IllegalArgumentException if <code>col</code> isn't in <code>cursor</code>
+     */
     @Nullable
     public static byte[] requireBlob(@NonNull Cursor cursor, @NonNull String col) {
         return cursor.getBlob(cursor.getColumnIndexOrThrow(col));

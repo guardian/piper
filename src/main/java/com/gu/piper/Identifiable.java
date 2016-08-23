@@ -1,7 +1,7 @@
 package com.gu.piper;
 
 /**
- * TODO
+ * Identifiable objects have an ID which clients can get and set.
  */
 public interface Identifiable {
     long getId();

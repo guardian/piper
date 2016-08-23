@@ -7,7 +7,8 @@ import android.support.annotation.NonNull;
 import java.io.IOException;
 
 /**
- * TODO
+ * A {@link Table} subclass which supports updating and deleting items. Will also set the ID of any
+ * item successfully inserted using {@link #insert(Object, int)}.
  */
 public abstract class IdTable<T> extends Table<T> {
 

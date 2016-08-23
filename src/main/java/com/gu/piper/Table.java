@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Max Spencer <max.spencer@guardian.co.uk>
+ * A table containing a certain type of objects T. With a {@link Table} you may only insert items
+ * and query existing items. Use an {@link IdTable} if you need to update or delete existing items
+ * in a table.
  */
 public class Table<T> {
 
