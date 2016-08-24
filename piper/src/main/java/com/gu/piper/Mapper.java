@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 /**
  * Encapsulation of how a specified type can be converted to a {@link ContentValues} instance and
  * created from a {@link Cursor}.
- *
- * @author Max Spencer <max.spencer@guardian.co.uk>
  */
 public interface Mapper<T> {
 
