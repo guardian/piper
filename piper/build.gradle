@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 24
@@ -47,6 +48,42 @@ artifacts {
     archives sourcesJar
 }
 */
+group = 'com.gu.android'
+version = '0.1.1'
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'Piper'
+            description 'An Android library to reduce fiddly boilerplate SQLite code'
+            url 'https://github.com/guardian/piper'
+            inceptionYear '2016'
+
+            packaging 'aar'
+            groupId 'com.gu.android'
+            artifactId 'piper'
+            version '0.1.1'
+
+            licenses {
+                license {
+                    name 'The MIT License (MIT)'
+                    url 'https://opensource.org/licenses/MIT'
+                }
+            }
+            scm {
+                connection 'https://github.com/guardian/piper.git'
+                url 'https://github.com/guardian/piper'
+
+            }
+            developers {
+                developer {
+                    id = 'maxspencer'
+                    name 'Max Spencer'
+                }
+            }
+        }
+    }
+}
 
 Properties bintrayProperties = new Properties()
 bintrayProperties.load(project.rootProject.file('bintray.properties').newDataInputStream())
@@ -63,10 +100,10 @@ bintray {
         vcsUrl = 'https://github.com/guardian/piper.git'
         publish = true
         version {
-            name = '0.1'
-            desc = 'Piper 0.1'
+            name = '0.1.1'
+            desc = 'Piper 0.1.1'
             released = new Date()
-            vcsTag = '0.1'
+            vcsTag = '0.1.1'
         }
     }
 }
