@@ -68,7 +68,7 @@ public class Table<T> {
     }
 
     @NonNull
-    private List<T> listFromCursor(@NonNull Cursor cursor) {
+    protected List<T> listFromCursor(@NonNull Cursor cursor) {
         if (cursor.isBeforeFirst()) {
             cursor.moveToFirst();
         }
@@ -111,6 +111,11 @@ public class Table<T> {
     @NonNull
     public final List<T> getAll() {
         return listFromCursor(simpleQuery(null, null, null));
+    }
+
+    @NonNull
+    public final Query<T> query() {
+        return new Query(this);
     }
 
 }
