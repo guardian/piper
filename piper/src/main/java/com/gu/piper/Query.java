@@ -12,8 +12,6 @@ import java.util.List;
  */
 public class Query<T> {
 
-    @NonNull private final Table<T> table;
-
     private boolean distinct = false;
     @Nullable private String where;
     @Nullable private String[] args;
@@ -22,8 +20,7 @@ public class Query<T> {
     @Nullable private String orderBy;
     @Nullable private String limit;
 
-    protected Query(@NonNull Table<T> table) {
-        this.table = table;
+    public Query() {
     }
 
     @NonNull
@@ -64,7 +61,7 @@ public class Query<T> {
     }
 
     @NonNull
-    public List<T> select() {
+    public List<T> select(@NonNull Table<T> table) {
         Cursor result = null;
         try {
             result = table.db.query(distinct, table.tableName, null, where, args, groupBy, having, orderBy, limit);

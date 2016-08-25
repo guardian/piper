@@ -114,8 +114,12 @@ public class Table<T> {
     }
 
     @NonNull
-    public final Query<T> query() {
-        return new Query(this);
+    public DeleteQuery delete() {
+        return new DeleteQuery(db, tableName);
+    }
+
+    public UpdateQuery update() {
+        return new UpdateQuery(db, tableName);
     }
 
 }
