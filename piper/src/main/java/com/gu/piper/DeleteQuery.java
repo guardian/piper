@@ -9,14 +9,10 @@ import android.support.annotation.Nullable;
  */
 public class DeleteQuery {
 
-    @NonNull private final SQLiteDatabase db;
-    @NonNull private final String tableName;
     @Nullable private String where;
     @Nullable private String[] args;
 
-    public DeleteQuery(@NonNull SQLiteDatabase db, @NonNull String tableName) {
-        this.db = db;
-        this.tableName = tableName;
+    public DeleteQuery() {
     }
 
     @NonNull
@@ -26,7 +22,7 @@ public class DeleteQuery {
         return this;
     }
 
-    public int execute() {
+    public int execute(@NonNull SQLiteDatabase db, @NonNull String tableName) {
         return db.delete(tableName, where, args);
     }
 

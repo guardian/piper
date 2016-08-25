@@ -10,16 +10,12 @@ import android.support.annotation.Nullable;
  */
 public class UpdateQuery {
 
-    @NonNull private final SQLiteDatabase db;
-    @NonNull private final String tableName;
     @NonNull private final ContentValues values = new ContentValues();
     @Nullable private String where;
     @Nullable private String[] args;
     private int conflictAlgorithm = SQLiteDatabase.CONFLICT_NONE;
 
-    public UpdateQuery(@NonNull SQLiteDatabase db, @NonNull String tableName) {
-        this.db = db;
-        this.tableName = tableName;
+    protected UpdateQuery() {
     }
 
     @NonNull
@@ -95,7 +91,7 @@ public class UpdateQuery {
         return this;
     }
 
-    public int execute() {
+    public int execute(@NonNull SQLiteDatabase db, @NonNull String tableName) {
         return db.updateWithOnConflict(tableName, values, where, args, conflictAlgorithm);
     }
 

@@ -114,12 +114,29 @@ public class Table<T> {
     }
 
     @NonNull
-    public DeleteQuery delete() {
-        return new DeleteQuery(db, tableName);
+    public List<T> list(@NonNull SelectQuery selectQuery) {
+        return listFromCursor(cursor(selectQuery));
     }
 
-    public UpdateQuery update() {
-        return new UpdateQuery(db, tableName);
+    @NonNull
+    public Cursor cursor(@NonNull SelectQuery selectQuery) {
+        return selectQuery.cursor(db, tableName);
+    }
+
+    public int count(@NonNull SelectQuery selectQuery) {
+        return selectQuery.count(db, tableName);
+    }
+
+    public boolean exists(@NonNull SelectQuery selectQuery) {
+        return selectQuery.exists(db, tableName);
+    }
+
+    public int run(@NonNull DeleteQuery deleteQuery) {
+        return deleteQuery.execute(db, tableName);
+    }
+
+    public int run(@NonNull UpdateQuery updateQuery) {
+        return updateQuery.execute(db, tableName);
     }
 
 }

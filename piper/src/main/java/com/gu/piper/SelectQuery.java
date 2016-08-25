@@ -1,16 +1,14 @@
 package com.gu.piper;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * TODO
  */
-public class Query<T> {
+public class SelectQuery {
 
     private boolean distinct = false;
     @Nullable private String where;
@@ -20,65 +18,57 @@ public class Query<T> {
     @Nullable private String orderBy;
     @Nullable private String limit;
 
-    public Query() {
+    public SelectQuery() {
     }
 
     @NonNull
-    public Query<T> distinct(boolean distinct) {
+    public SelectQuery distinct(boolean distinct) {
         this.distinct = distinct;
         return this;
     }
 
     @NonNull
-    public Query<T> where(@Nullable String where, @Nullable String[] args) {
+    public SelectQuery where(@Nullable String where, @Nullable String... args) {
         this.where = where;
         this.args = args;
         return this;
     }
 
     @NonNull
-    public Query<T> groupBy(@Nullable String groupBy) {
+    public SelectQuery groupBy(@Nullable String groupBy) {
         this.groupBy = groupBy;
         return this;
     }
 
     @NonNull
-    public Query<T> having(@Nullable String having) {
+    public SelectQuery having(@Nullable String having) {
         this.having = having;
         return this;
     }
 
     @NonNull
-    public Query<T> orderBy(@Nullable String orderBy) {
+    public SelectQuery orderBy(@Nullable String orderBy) {
         this.orderBy = orderBy;
         return this;
     }
 
     @NonNull
-    public Query<T> limit(int limit) {
+    public SelectQuery limit(int limit) {
         this.limit = limit > 0 ? Integer.toString(limit) : null;
         return this;
     }
 
     @NonNull
-    public List<T> select(@NonNull Table<T> table) {
-        Cursor result = null;
-        try {
-            result = table.db.query(distinct, table.tableName, null, where, args, groupBy, having, orderBy, limit);
-            return table.listFromCursor(result);
-        } finally {
-            if (result != null) {
-                result.close();
-            }
-        }
+    public Cursor cursor(@NonNull SQLiteDatabase db, @NonNull String tableName) {
+        return db.query(distinct, tableName, null, where, args, groupBy, having, orderBy, limit);
     }
 
-    public int count() {
+    public int count(@NonNull SQLiteDatabase db, @NonNull String tableName) {
         // TODO
         return 0;
     }
 
-    public boolean exists() {
+    public boolean exists(@NonNull SQLiteDatabase db, @NonNull String tableName) {
         // TODO
         return false;
     }
