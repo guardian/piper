@@ -1,6 +1,5 @@
 package com.gu.piper;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -11,60 +10,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A table containing a certain type of objects T. With a {@link Table} you may only insert items
- * and query existing items. Use an {@link IdTable} if you need to update or delete existing items
- * in a table.
+ * A table containing a certain type of objects T.
  */
 public class Table<T> {
 
     @NonNull protected final SQLiteDatabase db;
     @NonNull protected final String tableName;
     @NonNull protected final Mapper<T> mapper;
+    @NonNull private final String keySelection;
 
-    protected Table(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<T> mapper) {
+    public Table(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<T> mapper) {
         this.db = db;
         this.tableName = tableName;
         this.mapper = mapper;
+        this.keySelection = selectionFromKeyColumns(mapper.getKeyColumns());
     }
 
     @NonNull
-    public static <T> Table<T> getTable(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<T> mapper) {
-        return new Table<>(db, tableName, mapper);
-    }
-
-    @NonNull
-    public static <R extends Identifiable> IdTable<R> getIdTable(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<R> mapper) {
-        return new IdTable<R>(db, tableName, mapper) {
-            @Override
-            protected long getId(@NonNull R r) {
-                return r.getId();
-            }
-
-            @Override
-            protected void setId(@NonNull R r, long id) {
-                r.setId(id);
-            }
-        };
-    }
-
-    @NonNull
-    public static <R> IdTable<R> getIdTable(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<R> mapper, @NonNull final Identifier<R> identifier) {
-        return new IdTable<R>(db, tableName, mapper) {
-            @Override
-            protected long getId(@NonNull R r) {
-                return identifier.getId(r);
-            }
-
-            @Override
-            protected void setId(@NonNull R r, long id) {
-                identifier.setId(r, id);
-            }
-        };
-    }
-
-    @NonNull
-    protected static String[] asArg(long id) {
-        return new String[] { String.valueOf(id) };
+    private static String selectionFromKeyColumns(@NonNull String[] keyColumns) {
+        String selection = keyColumns[0] + "=?";
+        for (int i = 1; i < keyColumns.length; i++) {
+            selection += " AND " + keyColumns[i] + "=?";
+        }
+        return selection;
     }
 
     @NonNull
@@ -82,20 +50,21 @@ public class Table<T> {
     }
 
     public long insert(@NonNull T t) throws IOException {
-        return insert(t, -1);
+        return insert(t, SQLiteDatabase.CONFLICT_NONE);
     }
 
     public long insert(@NonNull T t, int conflictAlgorithm) throws IOException {
         if (db.isReadOnly()) {
             throw new IllegalArgumentException("db is read-only");
         }
-
-        final ContentValues values = mapper.toContentValues(t);
-        if (conflictAlgorithm < 0) {
-            return db.insert(tableName, null, values);
-        } else {
-            return db.insertWithOnConflict(tableName, null, values, conflictAlgorithm);
-        }
+        final long rowId = db.insertWithOnConflict(
+                tableName,
+                null,
+                mapper.toContentValues(t),
+                conflictAlgorithm
+        );
+        mapper.onNewId(t, rowId);
+        return rowId;
     }
 
     @NonNull
@@ -113,4 +82,28 @@ public class Table<T> {
         return listFromCursor(simpleQuery(null, null, null));
     }
 
+    public final boolean update(T t) {
+        if (db.isReadOnly()) {
+            throw new IllegalStateException("db is read-only");
+        }
+        final int updated = db.update(
+                tableName,
+                mapper.toContentValues(t),
+                keySelection,
+                mapper.getKeyValues(t)
+        );
+        return updated == 1;
+    }
+
+    public final boolean delete(T t) {
+        if (db.isReadOnly()) {
+            throw new IllegalStateException("db is read-only");
+        }
+        final int deleted = db.delete(
+                tableName,
+                keySelection,
+                mapper.getKeyValues(t)
+        );
+        return deleted == 1;
+    }
 }
