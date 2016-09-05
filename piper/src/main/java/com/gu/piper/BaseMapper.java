@@ -5,11 +5,11 @@ import android.support.annotation.NonNull;
 /**
  * TODO
  */
-public abstract class SimpleMapper<T> implements Mapper<T> {
+public abstract class BaseMapper<T> implements Mapper<T> {
 
     @NonNull private final String[] keyColumns;
 
-    public SimpleMapper(@NonNull String keyColumn) {
+    public BaseMapper(@NonNull String keyColumn) {
         keyColumns = new String[] { keyColumn };
     }
 

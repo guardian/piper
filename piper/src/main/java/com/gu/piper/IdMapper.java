@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 /**
  * TODO
  */
-public abstract class IdMapper<T> extends SimpleMapper<T> {
+public abstract class IdMapper<T> extends BaseMapper<T> {
 
     public IdMapper() {
         super(BaseColumns._ID);
@@ -18,11 +18,11 @@ public abstract class IdMapper<T> extends SimpleMapper<T> {
     }
 
     @Override
-    protected String getKeyValue(T t) {
+    protected String getKeyValue(@NonNull T t) {
         return Long.toString(getId(t));
     }
 
-    protected abstract long getId(T t);
+    protected abstract long getId(@NonNull T t);
 
-    protected abstract void setId(T t, long id);
+    protected abstract void setId(@NonNull T t, long id);
 }
