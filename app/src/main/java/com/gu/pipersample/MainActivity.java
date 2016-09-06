@@ -2,6 +2,11 @@ package com.gu.pipersample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.gu.piper.Table;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,6 +15,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new DbHelper(this).getPeopleTable().insert(new Person("max", "developer"));
+        Table<Person> peopleTable = new DbHelper(this).getPeopleTable();
+        Person max = new Person("Max Spencer", "Android developer");
+
+        try {
+            max.setId(peopleTable.insert(max));
+        } catch (IOException e) {
+            Log.w("MainActivity", e);
+        }
+
+
     }
 }

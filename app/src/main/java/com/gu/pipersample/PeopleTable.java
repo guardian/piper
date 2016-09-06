@@ -6,7 +6,6 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
 import com.gu.piper.CursorHelper;
-import com.gu.piper.IdMapper;
 import com.gu.piper.Mapper;
 
 /**
@@ -29,31 +28,22 @@ public final class PeopleTable implements BaseColumns {
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public static final Mapper<Person> MAPPER = new IdMapper<Person>() {
+    public static final Mapper<Person> MAPPER = new Mapper<Person>() {
 
         @Override
-        protected long getId(@NonNull Person person) {
-            return person.getId();
-        }
-
-        @Override
-        protected void setId(@NonNull Person person, long id) {
-            person.setId(id);
-        }
-
-        @NonNull
-        @Override
-        public ContentValues toContentValues(@NonNull Person person) {
-            ContentValues values = new ContentValues(2);
-            if (person.hasId()) values.put(_ID, person.getId());
+        public void writeTo(@NonNull Person person, @NonNull ContentValues values) {
             values.put(NAME, person.getName());
             values.put(JOB, person.getJob());
-            return values;
+        }
+
+        @Override
+        public void writeIdTo(@NonNull Person person, @NonNull ContentValues values) {
+            values.put(_ID, person.getId());
         }
 
         @NonNull
         @Override
-        public Person fromCursor(@NonNull Cursor cursor) {
+        public Person readFrom(@NonNull Cursor cursor) {
             return new Person(
                     CursorHelper.requireLong(cursor, _ID),
                     CursorHelper.requireString(cursor, NAME),

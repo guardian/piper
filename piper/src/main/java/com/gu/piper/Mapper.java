@@ -11,41 +11,20 @@ import android.support.annotation.NonNull;
 public interface Mapper<T> {
 
     /**
-     * Get an array of one or more names of columns which contain the primary key of a T.
-     *
-     * @return an array of column names
-     */
-    @NonNull
-    String[] getKeyColumns();
-
-    /**
-     * Get an array of one or more values from a T which form its primary key.
+     * Write a T into a {@link ContentValues} map.
      *
      * @param t a T
-     * @return an array of values
+     * @param values a ContentValues to write to
      */
-    @NonNull
-    String[] getKeyValues(@NonNull T t);
+    void writeTo(@NonNull T t, @NonNull ContentValues values);
 
     /**
-     * Called when a T is inserted and a new row ID is returned.
-     * <p>
-     * You may override this method to set the ID of <code>t</code> if appropriate, or use the new
-     * ID in some other way.
+     * Write the ID value(s) of a T into a {@link ContentValues} map.
      *
-     * @param t which was inserted
-     * @param rowId the new row ID
+     * @param t a T to write the ID value(s) of
+     * @param values a ContentValues to write them to
      */
-    void onNewId(@NonNull T t, long rowId);
-
-    /**
-     * Create a new {@link ContentValues} from a T.
-     *
-     * @param t a T
-     * @return a new ContentValues
-     */
-    @NonNull
-    ContentValues toContentValues(@NonNull T t);
+    void writeIdTo(@NonNull T t, @NonNull ContentValues values);
 
     /**
      * Create a new T from a non-empty {@link Cursor} instance.
@@ -54,6 +33,5 @@ public interface Mapper<T> {
      * @return a new T
      */
     @NonNull
-    T fromCursor(@NonNull Cursor cursor);
-
+    T readFrom(@NonNull Cursor cursor);
 }

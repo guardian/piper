@@ -1,5 +1,6 @@
 package com.gu.piper;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,22 +19,44 @@ public class Table<T> {
     @NonNull protected final SQLiteDatabase db;
     @NonNull protected final String tableName;
     @NonNull protected final Mapper<T> mapper;
-    @NonNull private final String keySelection;
 
     public Table(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<T> mapper) {
         this.db = db;
         this.tableName = tableName;
         this.mapper = mapper;
-        this.keySelection = selectionFromKeyColumns(mapper.getKeyColumns());
     }
 
     @NonNull
-    private static String selectionFromKeyColumns(@NonNull String[] keyColumns) {
-        String selection = keyColumns[0] + "=?";
-        for (int i = 1; i < keyColumns.length; i++) {
-            selection += " AND " + keyColumns[i] + "=?";
+    private static String[] sortedKeys(@NonNull ContentValues values) {
+        final String[] keys = values.keySet().toArray(new String[values.size()]);
+        Arrays.sort(keys);
+        return keys;
+    }
+
+    @NonNull
+    private static String getKeySelection(@NonNull ContentValues values) {
+        final String[] columns = sortedKeys(values);
+        String selection = columns[0] + "=?";
+        for (int i = 1; i < columns.length; i++) {
+            selection += " AND " + columns[i] + "=?";
         }
         return selection;
+    }
+
+    @NonNull
+    private static String[] getKeySelectionArgs(@NonNull ContentValues values) {
+        final String[] columns = sortedKeys(values);
+        final String[] args = new String[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            args[i] = values.getAsString(columns[i]);
+        }
+        return args;
+    }
+
+    @NonNull
+    private ContentValues getContentValues() {
+        // TODO use an object pool here
+        return new ContentValues();
     }
 
     @NonNull
@@ -43,7 +67,7 @@ public class Table<T> {
 
         final List<T> result = new ArrayList<>(cursor.getCount() - cursor.getPosition());
         while (!cursor.isAfterLast()) {
-            result.add(mapper.fromCursor(cursor));
+            result.add(mapper.readFrom(cursor));
             cursor.moveToNext();
         }
         return result;
@@ -57,14 +81,9 @@ public class Table<T> {
         if (db.isReadOnly()) {
             throw new IllegalArgumentException("db is read-only");
         }
-        final long rowId = db.insertWithOnConflict(
-                tableName,
-                null,
-                mapper.toContentValues(t),
-                conflictAlgorithm
-        );
-        mapper.onNewId(t, rowId);
-        return rowId;
+        final ContentValues values = getContentValues();
+        mapper.writeTo(t, values);
+        return db.insertWithOnConflict(tableName, null, values, conflictAlgorithm);
     }
 
     @NonNull
@@ -86,11 +105,15 @@ public class Table<T> {
         if (db.isReadOnly()) {
             throw new IllegalStateException("db is read-only");
         }
+        final ContentValues values = getContentValues();
+        final ContentValues idValues = getContentValues();
+        mapper.writeTo(t, values);
+        mapper.writeIdTo(t, idValues);
         final int updated = db.update(
                 tableName,
-                mapper.toContentValues(t),
-                keySelection,
-                mapper.getKeyValues(t)
+                values,
+                getKeySelection(idValues),
+                getKeySelectionArgs(idValues)
         );
         return updated == 1;
     }
@@ -99,10 +122,12 @@ public class Table<T> {
         if (db.isReadOnly()) {
             throw new IllegalStateException("db is read-only");
         }
+        final ContentValues idValues = getContentValues();
+        mapper.writeIdTo(t, idValues);
         final int deleted = db.delete(
                 tableName,
-                keySelection,
-                mapper.getKeyValues(t)
+                getKeySelection(idValues),
+                getKeySelectionArgs(idValues)
         );
         return deleted == 1;
     }
