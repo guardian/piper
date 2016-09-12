@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import com.gu.piper.CursorHelper;
 import com.gu.piper.Mapper;
 
+import java.util.Date;
+
 /**
  * TODO
  */
@@ -20,11 +22,13 @@ public final class PeopleTable implements BaseColumns {
     public static final String TABLE_NAME = "people";
     public static final String NAME = "name";
     public static final String JOB = "job";
+    public static final String DOB = "dob";
 
     public static final String CREATE_SQL = "CREATE TABLE " + TABLE_NAME + " (" +
             _ID + " INTEGER PRIMARY KEY," +
             NAME + " TEXT," +
-            JOB + " TEXT)";
+            JOB + " TEXT," +
+            DOB + " INTEGER)";
 
     public static final String DROP_SQL = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
@@ -34,6 +38,7 @@ public final class PeopleTable implements BaseColumns {
         public void writeTo(@NonNull Person person, @NonNull ContentValues values) {
             values.put(NAME, person.getName());
             values.put(JOB, person.getJob());
+            values.put(DOB, person.getDob().getTime());
         }
 
         @Override
@@ -47,7 +52,8 @@ public final class PeopleTable implements BaseColumns {
             return new Person(
                     CursorHelper.requireLong(cursor, _ID),
                     CursorHelper.requireString(cursor, NAME),
-                    CursorHelper.requireString(cursor, JOB)
+                    CursorHelper.requireString(cursor, JOB),
+                    new Date(CursorHelper.requireLong(cursor, DOB))
             );
         }
     };

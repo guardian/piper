@@ -12,7 +12,7 @@ import com.gu.piper.Table;
 public class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context) {
-        super(context, "pipersample.sqlite", null, 1);
+        super(context, "pipersample.sqlite", null, 5);
     }
 
     @Override
