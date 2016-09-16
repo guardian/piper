@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener, PeopleFragment.PeopleFragmentListener {
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         addFab = (FloatingActionButton) findViewById(R.id.add_fab);
 
@@ -31,12 +33,14 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                 .addToBackStack(null)
                 .commit();
         addFab.setVisibility(View.GONE);
+        getSupportActionBar().setTitle("New person");
     }
 
     @Override
     public void onBackStackChanged() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             addFab.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle("People");
         }
     }
 

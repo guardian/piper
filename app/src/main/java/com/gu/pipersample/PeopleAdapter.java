@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -34,6 +36,8 @@ public class PeopleAdapter extends android.support.v7.widget.RecyclerView.Adapte
     }
 
     @NonNull private final List<Person> data = new ArrayList<>();
+    @NonNull private final List<Person> sortedData = new ArrayList<>();
+    @Nullable private Comparator<Person> comparator = null;
     @Nullable private LayoutInflater inflater = null;
     @Nullable private PeopleAdapterListener listener = null;
 
@@ -45,12 +49,26 @@ public class PeopleAdapter extends android.support.v7.widget.RecyclerView.Adapte
     public void setData(@NonNull Collection<Person> data) {
         this.data.clear();
         this.data.addAll(data);
+        sortData();
+    }
+
+    public void setSortOrder(@NonNull Comparator<Person> comparator) {
+        this.comparator = comparator;
+        sortData();
+    }
+
+    private void sortData() {
+        sortedData.clear();
+        sortedData.addAll(data);
+        if (comparator != null) {
+            Collections.sort(sortedData, comparator);
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public long getItemId(int position) {
-        return data.get(position).getId();
+        return sortedData.get(position).getId();
     }
 
     @NonNull
@@ -68,7 +86,7 @@ public class PeopleAdapter extends android.support.v7.widget.RecyclerView.Adapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Person person = data.get(position);
+        final Person person = sortedData.get(position);
         holder.nameView.setText(person.getName());
         holder.jobView.setText(person.getJob());
         holder.itemView.setOnClickListener(view -> {
@@ -80,6 +98,6 @@ public class PeopleAdapter extends android.support.v7.widget.RecyclerView.Adapte
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return sortedData.size();
     }
 }

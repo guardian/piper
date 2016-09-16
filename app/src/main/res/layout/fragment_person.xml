@@ -16,14 +16,6 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            tools:text="Joe Bloggs" />
-
-        <TextView
             android:id="@+id/job"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
