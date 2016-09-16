@@ -3,7 +3,6 @@ package com.gu.pipersample;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +15,29 @@ import java.util.List;
 /**
  * TODO
  */
-public class PersonAdapter extends android.support.v7.widget.RecyclerView.Adapter<PersonAdapter.PersonHolder> {
+public class PeopleAdapter extends android.support.v7.widget.RecyclerView.Adapter<PeopleAdapter.ViewHolder> {
 
-    public static class PersonHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView nameView;
         private final TextView jobView;
 
-        public PersonHolder(View view) {
+        public ViewHolder(View view) {
             super(view);
             nameView = (TextView) view.findViewById(R.id.name);
             jobView = (TextView) view.findViewById(R.id.job);
         }
     }
 
-    public interface PersonAdapterListener {
+    public interface PeopleAdapterListener {
         void onPersonClick(Person person);
     }
 
     @NonNull private final List<Person> data = new ArrayList<>();
     @Nullable private LayoutInflater inflater = null;
-    @Nullable private PersonAdapterListener listener = null;
+    @Nullable private PeopleAdapterListener listener = null;
 
-    public PersonAdapter(@Nullable PersonAdapterListener listener) {
+    public PeopleAdapter(@Nullable PeopleAdapterListener listener) {
         setHasStableIds(true);
         this.listener = listener;
     }
@@ -63,12 +62,12 @@ public class PersonAdapter extends android.support.v7.widget.RecyclerView.Adapte
     }
 
     @Override
-    public PersonHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PersonHolder(getInflater(parent).inflate(R.layout.item_person, parent, false));
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(getInflater(parent).inflate(R.layout.item_person, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(PersonHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         final Person person = data.get(position);
         holder.nameView.setText(person.getName());
         holder.jobView.setText(person.getJob());

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener, PeopleListFragment.PeopleListListener {
+public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener, PeopleFragment.PeopleFragmentListener {
 
     private FloatingActionButton addFab;
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main, new PeopleListFragment())
+                    .add(R.id.main, new PeopleFragment())
                     .commit();
             getSupportFragmentManager().addOnBackStackChangedListener(this);
         }

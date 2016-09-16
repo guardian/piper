@@ -1,10 +1,8 @@
 package com.gu.pipersample;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,19 +19,19 @@ import rx.schedulers.Schedulers;
 /**
  * TODO
  */
-public class PeopleListFragment extends Fragment implements PersonAdapter.PersonAdapterListener {
+public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleAdapterListener {
 
-    private static final String TAG = PeopleListFragment.class.getSimpleName();
+    private static final String TAG = PeopleFragment.class.getSimpleName();
 
-    public interface PeopleListListener {
+    public interface PeopleFragmentListener {
         void onPersonClick(Person person);
     }
 
-    private final PersonAdapter adapter = new PersonAdapter(this);
+    private final PeopleAdapter adapter = new PeopleAdapter(this);
 
     @Nullable
-    private PeopleListListener getListener() {
-        return getActivity() instanceof PeopleListListener ? (PeopleListListener) getActivity() : null;
+    private PeopleFragmentListener getListener() {
+        return getActivity() instanceof PeopleFragmentListener ? (PeopleFragmentListener) getActivity() : null;
     }
 
     @Nullable
