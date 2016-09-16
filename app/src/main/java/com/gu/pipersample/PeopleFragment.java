@@ -37,7 +37,7 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleAdap
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_people_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_people, container, false);
         final RecyclerView list = (RecyclerView) view.findViewById(R.id.list);
         final RecyclerView.LayoutManager layout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         list.setAdapter(adapter);

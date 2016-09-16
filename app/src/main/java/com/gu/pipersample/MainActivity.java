@@ -55,5 +55,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                 .replace(R.id.main, PersonFragment.newInstance(person))
                 .addToBackStack(null)
                 .commit();
+        addFab.setVisibility(View.GONE);
     }
 }

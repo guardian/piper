@@ -19,7 +19,7 @@
         android:layout_marginRight="?android:attr/listPreferredItemPaddingRight"
         android:layout_marginEnd="?android:attr/listPreferredItemPaddingRight"
         android:layout_marginBottom="?android:attr/listPreferredItemPaddingRight"
-        android:src="@drawable/ic_add_black_24dp"
+        android:src="@drawable/ic_add_white_24dp"
         app:fabSize="normal"
         android:onClick="onAddClick"
         android:id="@+id/add_fab" />
