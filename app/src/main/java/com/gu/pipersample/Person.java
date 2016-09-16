@@ -1,13 +1,33 @@
 package com.gu.pipersample;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * TODO
  */
-public class Person {
+public class Person implements Parcelable {
 
     private static final long NO_ID = -1;
+
+    public static final Creator<Person> CREATOR = new Creator<Person>() {
+        @Override
+        public Person createFromParcel(Parcel in) {
+            return new Person(
+                    in.readLong(),
+                    in.readString(),
+                    in.readString(),
+                    new Date(in.readLong())
+            );
+        }
+
+        @Override
+        public Person[] newArray(int size) {
+            return new Person[size];
+        }
+    };
 
     private long id = NO_ID;
     private final String name;
@@ -52,5 +72,18 @@ public class Person {
 
     public final boolean hasId() {
         return id > 0;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeString(name);
+        parcel.writeString(job);
+        parcel.writeLong(dob.getTime());
     }
 }
