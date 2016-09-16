@@ -1,8 +1,10 @@
 package com.gu.pipersample;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,10 +21,20 @@ import rx.schedulers.Schedulers;
 /**
  * TODO
  */
-public class PeopleListFragment extends Fragment {
+public class PeopleListFragment extends Fragment implements PersonAdapter.PersonAdapterListener {
 
     private static final String TAG = PeopleListFragment.class.getSimpleName();
-    private final PersonAdapter adapter = new PersonAdapter();
+
+    public interface PeopleListListener {
+        void onPersonClick(Person person);
+    }
+
+    private final PersonAdapter adapter = new PersonAdapter(this);
+
+    @Nullable
+    private PeopleListListener getListener() {
+        return getActivity() instanceof PeopleListListener ? (PeopleListListener) getActivity() : null;
+    }
 
     @Nullable
     @Override
@@ -54,5 +66,12 @@ public class PeopleListFragment extends Fragment {
                 }, error -> {
                     Log.w(TAG, "Unable to load people", error);
                 });
+    }
+
+    @Override
+    public void onPersonClick(Person person) {
+        if (getListener() != null) {
+            getListener().onPersonClick(person);
+        }
     }
 }

@@ -4,15 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
-import com.gu.piper.Table;
-
-import java.io.IOException;
-import java.util.Date;
-
-public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener, PeopleListFragment.PeopleListListener {
 
     private FloatingActionButton addFab;
 
@@ -53,5 +47,13 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void onPersonClick(Person person) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main, PersonFragment.newInstance(person))
+                .addToBackStack(null)
+                .commit();
     }
 }

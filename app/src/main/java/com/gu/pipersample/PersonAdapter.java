@@ -3,6 +3,7 @@ package com.gu.pipersample;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,17 @@ public class PersonAdapter extends android.support.v7.widget.RecyclerView.Adapte
         }
     }
 
+    public interface PersonAdapterListener {
+        void onPersonClick(Person person);
+    }
+
     @NonNull private final List<Person> data = new ArrayList<>();
     @Nullable private LayoutInflater inflater = null;
+    @Nullable private PersonAdapterListener listener = null;
 
-    public PersonAdapter() {
+    public PersonAdapter(@Nullable PersonAdapterListener listener) {
         setHasStableIds(true);
+        this.listener = listener;
     }
 
     public void setData(@NonNull Collection<Person> data) {
@@ -65,6 +72,11 @@ public class PersonAdapter extends android.support.v7.widget.RecyclerView.Adapte
         final Person person = data.get(position);
         holder.nameView.setText(person.getName());
         holder.jobView.setText(person.getJob());
+        holder.itemView.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onPersonClick(person);
+            }
+        });
     }
 
     @Override
