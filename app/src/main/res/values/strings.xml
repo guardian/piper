@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Piper Sample</string>
+    <string name="name_hint">Name</string>
+    <string name="job_hint">Job</string>
+    <string name="required">required</string>
+    <string name="fmt_added">%s was added</string>
+    <string name="problem_occurred">A problem occurred</string>
+    <string name="save">Save</string>
 </resources>
