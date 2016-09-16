@@ -7,9 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
@@ -34,6 +38,12 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleAdap
         return getActivity() instanceof PeopleFragmentListener ? (PeopleFragmentListener) getActivity() : null;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,6 +53,27 @@ public class PeopleFragment extends Fragment implements PeopleAdapter.PeopleAdap
         list.setAdapter(adapter);
         list.setLayoutManager(layout);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_name:
+                Log.d("TAG", "Sort by name");
+                adapter.setSortOrder((p1, p2) -> p1.getName().compareTo(p2.getName()));
+                return true;
+            case R.id.sort_dob:
+                Log.d("TAG", "Sort by DOB");
+                adapter.setSortOrder((p1, p2) -> p1.getDob().compareTo(p2.getDob()));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

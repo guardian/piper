@@ -7,4 +7,7 @@
     <string name="problem_occurred">A problem occurred</string>
     <string name="save">Save</string>
     <string name="dob_label">Date of birth</string>
+    <string name="sort_by">Sort by</string>
+    <string name="sort_by_dob">Sort by date of birth</string>
+    <string name="sort_by_name">Sort by name</string>
 </resources>
