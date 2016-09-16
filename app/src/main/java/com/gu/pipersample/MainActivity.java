@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
+            return;
         }
         super.onBackPressed();
     }

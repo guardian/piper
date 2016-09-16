@@ -31,6 +31,7 @@ public class NewPersonFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_new_person, container, false);
         nameInput = (EditText) view.findViewById(R.id.name_input);
         jobInput = (EditText) view.findViewById(R.id.job_input);
+        view.findViewById(R.id.save_button).setOnClickListener(this::onSaveClick);
         return view;
     }
 
