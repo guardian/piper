@@ -22,6 +22,29 @@
         android:layout_height="wrap_content"
         android:hint="@string/job_hint"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:text="@string/dob_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <DatePicker
+            android:id="@+id/dob_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"

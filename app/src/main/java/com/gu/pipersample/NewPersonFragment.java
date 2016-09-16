@@ -3,14 +3,17 @@ package com.gu.pipersample;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import rx.Observable;
 import rx.Observer;
@@ -24,6 +27,7 @@ public class NewPersonFragment extends Fragment {
 
     private EditText nameInput;
     private EditText jobInput;
+    private DatePicker dobPicker;
 
     @Nullable
     @Override
@@ -31,6 +35,7 @@ public class NewPersonFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_new_person, container, false);
         nameInput = (EditText) view.findViewById(R.id.name_input);
         jobInput = (EditText) view.findViewById(R.id.job_input);
+        dobPicker = (DatePicker) view.findViewById(R.id.dob_picker);
         view.findViewById(R.id.save_button).setOnClickListener(this::onSaveClick);
         return view;
     }
@@ -39,7 +44,8 @@ public class NewPersonFragment extends Fragment {
         if (validate()) {
             final String name = nameInput.getText().toString();
             final String job = jobInput.getText().toString();
-            final Person person = new Person(name, job, new Date());
+            final Date dob = new GregorianCalendar(dobPicker.getYear(), dobPicker.getMonth(), dobPicker.getDayOfMonth()).getTime();
+            final Person person = new Person(name, job, dob);
             insertPerson(person).subscribe(new Observer<Void>() {
                 @Override
                 public void onCompleted() {
@@ -77,6 +83,7 @@ public class NewPersonFragment extends Fragment {
         return Observable.create((Observable.OnSubscribe<Void>) subscriber -> {
             try {
                 new DbHelper(getActivity()).getPeopleTable().insert(person);
+                Log.d("Inserted", person.toString());
                 subscriber.onCompleted();
             } catch (IOException e) {
                 subscriber.onError(e);
