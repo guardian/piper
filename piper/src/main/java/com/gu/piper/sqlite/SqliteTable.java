@@ -78,26 +78,17 @@ public class SqliteTable<T> implements Table<T> {
 
     @Override
     public long insert(@NonNull T t) throws IOException {
-        return insert(t, SQLiteDatabase.CONFLICT_NONE);
-    }
-
-    public long insert(@NonNull T t, int conflictAlgorithm) throws IOException {
         if (db.isReadOnly()) {
             throw new IllegalArgumentException("db is read-only");
         }
         final ContentValues values = getContentValues();
         mapper.writeTo(t, values);
-        return db.insertWithOnConflict(tableName, null, values, conflictAlgorithm);
+        return db.insert(tableName, null, values);
     }
 
     @NonNull
-    public final Cursor simpleQuery(@Nullable String[] cols, @Nullable String where, @Nullable String[] args) {
+    private Cursor simpleQuery(@Nullable String[] cols, @Nullable String where, @Nullable String[] args) {
         return db.query(tableName, cols, where, args, null, null, null);
-    }
-
-    @NonNull
-    public final List<T> getWhere(String where, String[] args) {
-        return listFromCursor(simpleQuery(null, where, args));
     }
 
     @Override
