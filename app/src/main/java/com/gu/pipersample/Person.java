@@ -71,7 +71,7 @@ public class Person implements Parcelable {
     }
 
     public final boolean hasId() {
-        return id > 0;
+        return id != NO_ID;
     }
 
     @Override
