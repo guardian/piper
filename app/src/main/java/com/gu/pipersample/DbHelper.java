@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.gu.piper.SqliteTable;
 import com.gu.piper.Table;
 
 /**
@@ -27,6 +28,6 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public Table<Person> getPeopleTable() {
-        return new Table<>(getWritableDatabase(), PeopleTable.TABLE_NAME, PeopleTable.MAPPER);
+        return new SqliteTable<>(getWritableDatabase(), PeopleTable.TABLE_NAME, PeopleTable.MAPPER);
     }
 }
