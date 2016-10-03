@@ -1,10 +1,13 @@
-package com.gu.piper;
+package com.gu.piper.sqlite;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.gu.piper.Mapper;
+import com.gu.piper.Table;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +19,9 @@ import java.util.List;
  */
 public class SqliteTable<T> implements Table<T> {
 
-    @NonNull protected final SQLiteDatabase db;
-    @NonNull protected final String tableName;
-    @NonNull protected final Mapper<T> mapper;
+    @NonNull private final SQLiteDatabase db;
+    @NonNull private final String tableName;
+    @NonNull private final Mapper<T> mapper;
 
     public SqliteTable(@NonNull SQLiteDatabase db, @NonNull String tableName, @NonNull Mapper<T> mapper) {
         this.db = db;
