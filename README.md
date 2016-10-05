@@ -21,6 +21,6 @@ In your project-level `build.gradle`:
 In your module-level `build.gradle`:
 
     dependencies {
-        compile 'com.guardian.android:piper:0.1.1'
+        compile 'com.guardian.android:piper:0.1.2'
         // Others...
     }
