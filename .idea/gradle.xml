@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/piper" />
+            <option value="$PROJECT_DIR$/rx-piper" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
