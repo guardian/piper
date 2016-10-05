@@ -2,7 +2,6 @@ package com.gu.piper;
 
 import android.support.annotation.NonNull;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,9 +14,8 @@ public interface Table<T> {
      *
      * @param t to insert
      * @return the new row ID
-     * @throws IOException if an error occurs
      */
-    long insert(@NonNull T t) throws IOException;
+    long insert(@NonNull T t);
 
     /**
      * Return a list of all the Ts in this table.

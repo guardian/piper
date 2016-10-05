@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import com.gu.piper.Mapper;
 import com.gu.piper.Table;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,7 +76,7 @@ public class SqliteTable<T> implements Table<T> {
     }
 
     @Override
-    public long insert(@NonNull T t) throws IOException {
+    public long insert(@NonNull T t) {
         if (db.isReadOnly()) {
             throw new IllegalArgumentException("db is read-only");
         }
