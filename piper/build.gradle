@@ -48,7 +48,7 @@ artifacts {
 }
 
 group = 'com.gu.android'
-version = '0.1.2'
+version = '0.1.3'
 
 install {
     repositories.mavenInstaller {
@@ -61,7 +61,7 @@ install {
             packaging 'aar'
             groupId 'com.gu.android'
             artifactId 'piper'
-            version '0.1.2'
+            version '0.1.3'
 
             licenses {
                 license {
@@ -99,10 +99,10 @@ bintray {
         vcsUrl = 'https://github.com/guardian/piper.git'
         publish = true
         version {
-            name = '0.1.2'
-            desc = 'Piper 0.1.2'
+            name = '0.1.3'
+            desc = 'Piper 0.1.3'
             released = new Date()
-            vcsTag = 'v0.1.2'
+            vcsTag = 'v0.1.3'
         }
     }
 }
